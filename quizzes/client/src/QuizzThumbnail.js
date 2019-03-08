@@ -12,9 +12,9 @@ class Quiz extends Component {
 
 
 	return (
-    	  <div>
-            <h1>{this.props.quizz.name}</h1>
-	        <Link  to={'/quizz/'+this.props.quizz._id}><img src={HTTP_SERVER_PORT_PICTURES + this.props.quizz.icon} /></Link>  
+    	  <div className="categorie" >
+            
+	        <Link  to={'/quizz/'+this.props.quizz._id}><img src={HTTP_SERVER_PORT_PICTURES + this.props.quizz.icon} /><h1 className="categorie_title">{this.props.quizz.name}</h1></Link>  
 	    </div>
 	);
     }

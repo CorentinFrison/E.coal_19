@@ -6,12 +6,16 @@ const router = express.Router();
 const db = require('./db/mongoose.js');
 const Users = db.users;
 const Quizzes = db.quizzes;
+
+
+
+
 router
- // .use(express.static('resources'))
- /// .use(bodyParser.json()) // for parsing application/json
-  //.use(bodyParser.urlencoded({
-  //  extended: true
-  //})) // for parsing application/x-www-form-urlencoded
+ .use(express.static('resources'))
+ .use(bodyParser.json()) // for parsing application/json
+  .use(bodyParser.urlencoded({
+    extended: true
+  })) // for parsing application/x-www-form-urlencoded
   .get("/users", (req, res) => {
     Users
       .find({})
@@ -43,7 +47,7 @@ router
           }})
   })
   .post('/upload', (req, res) => {
-    console.log(req);
+    console.log(req.files);
     req.files.file.mv(__dirname + '/resources/pictures/' + req.files.file.name,
         (err) => {
           if (err)

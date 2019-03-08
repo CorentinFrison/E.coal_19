@@ -3,17 +3,13 @@ import Home from "./home.js";
 import {quizzes} from "./examples";
 import {HTTP_SERVER_PORT_PICTURES, HTTP_SERVER_PORT} from "./constants";
 import {Link} from 'react-router-dom';
+import CreateQuestion from "./createQuestion";
 
 
 import axios from 'axios';
 
-class createQuiz extends Component {
-    constructor(props) {
-        super(props);
-       
-
-    }
-    
+class CreateQuiz extends Component {
+ 
 
     sendQuiz(e){
              e.preventDefault();
@@ -22,14 +18,16 @@ class createQuiz extends Component {
              const selectedFile = e.target.image.files[0];
              const data = new FormData();
              data.append('file', selectedFile, selectedFile.name);
-             console.log(selectedFile);
+             console.log(selectedFile.name);
              console.log(data);
              axios.post(HTTP_SERVER_PORT + "upload", data).then(res => console.log("Res", res));
-        axios.post(HTTP_SERVER_PORT + 'createquiz', {  // The json object to add in the collection
+            axios.post(HTTP_SERVER_PORT + 'createquiz', {  // The json object to add in the collection
             name:qname,
             published:true,
-            keywords:qkey
-            
+            keywords:qkey,
+            icon:selectedFile.name,
+
+            scores:[]
          }).then(res => {
            if (res.status === 200)
            console.log("test");
@@ -44,24 +42,53 @@ class createQuiz extends Component {
     render() {
       return (
         <div>
-        <form onSubmit={e => this.sendQuiz(e)}>
+        <header id="header">
+        <div id="visible_header">
+            <div class="header-toogle">
+                <a href="#header" id="header-toogle-open"> &#9776; </a>
+                <a href="#" id="header-toogle-close"> &#9747; </a>
+            </div>
+            <h2> the e.miners quiz</h2>
+         </div>
 
-        <h3>Create a new Quiz !</h3>
+        <nav id= "burger_menu">
+        <ul>
+            <li><strong>Menu</strong></li>
+            <li class="menu_categorie"><Link  to={'/'}>Home</Link></li>
+            <li class="menu_categorie"> <Link  to={'/'}>Find a Quiz</Link></li>
+            <li class="menu_categorie"> <Link  to={'/createquiz'}>Create a Quiz</Link></li>
+            <li class="menu_categorie"> <Link  to={'/'}>Login</Link></li>
+            <li class="menu_categorie"> <Link  to={'/'}>Register</Link></li>
+            <li class="menu_categorie"> <Link  to={'/about'}>About</Link></li>
+        </ul>
+</nav>
+</header>
+        <div className="quiz-creation">
+        <form className="quiz-form">
 
+        <h3 className="quiz-form-title">Create a new Quiz !</h3>
+        <div className="formfirstline">
         <label htmlFor="name">Quiz name :</label>
         <input type="text" id="quizname" name="name" required></input>
+        </div>
         <br></br>
-        <label htmlFor="image">Quiz picture:</label>
-        <input type="file" id="quizimage" name="image" accept="image/png, image/jpeg"></input>
+        <label className="label-file" htmlFor="image">Quiz picture :</label>
+        <input className="input-file" type="file" id="quizimage" name="image" accept="image/png, image/jpeg" required></input>
+   
         <br></br>
-        <label htmlFor="keywords">keywords :</label>
+        <label htmlFor="keywords">Keywords (separated by semicolons) :</label>
         <input type="text" id="quizkey" name="keywords" required></input>
+        <br></br>
+        <CreateQuestion />
         <br></br>
         <input type="submit"  value="Send"/>
         </form>
-    </div>
-      );
+        </div>
+        </div>
+        
+        
+      )
    }
  }
  
- export default createQuiz;
+ export default CreateQuiz;
